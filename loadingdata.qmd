@@ -144,14 +144,6 @@ SP500_subset = SP500_return_table[SP500_return_table['Year']>=2000]
 SP500_subset_mean_return = float(SP500_subset['Total Return'].mean())
 ```
 
-Expected Return for LLY
-
-```{python}
-LLY_Beta = beta_df[beta_df['Ticker'] == 'LLY']
-
-LLY_Expected_Return = risk_free + LLY_Beta['beta'] * (SP500_subset_mean_return - risk_free)
-```
-
 Expected Return for every stock
 
 ```{python}
@@ -161,8 +153,57 @@ for t in beta_df['Ticker']:
     individual_stocks_beta = individual_stocks['beta']
     individual_stocks_expected_return = float(risk_free + individual_stocks_beta * (SP500_subset_mean_return - risk_free))
     Expected_Returns.append((t, individual_stocks_expected_return))
-Expected_Returns_df = pd.DataFrame(Expected_Returns, columns=['Ticker', 'beta'])
+Expected_Returns_df = pd.DataFrame(Expected_Returns, columns=['Ticker', 'Expected_Return'])
+```
+
+Merge the expected returns with existing data
+
+```{python}
+Newly_merged = pd.merge(updated_data, Expected_Returns_df, how = 'left', on = 'Ticker')
+```
+
+Expected Return of the portfolio if say we owned each of the 25 stocks equally
+
+```{python}
+stock_proportion = 1/25
+adjusted_temp_return = []
+
+for i in range(0, len(Expected_Returns_df)):
+    adjusted_return = Expected_Returns_df['Expected_Return'].iloc[i] * stock_proportion
+    adjusted_temp_return.append(adjusted_return)
+
+Total_Return = float(sum(adjusted_temp_return))
+```
+
+Need to find variance of every stock. Doing sample variance as not doing every stock on the company and only doing a subset of the stocks we did pull, not the entire stock history was pulled.
+
+variance = sum(Value - mean)^2 / n -1
+
+Need to find correlation values as well. Since we have 25 stocks, there are 300 possible 2 stock combinations. Combination(25,2) = 25!/(2!(25-2)!) = 300
+
+```{python}
+Newly_merged.columns = ['Date', 'Ticker', 'Close', 'Sector', 'beta', 'Expected_Return']
+Newly_merged['Daily_Return'] = Newly_merged.groupby('Ticker')['Close'].pct_change()
+
+efficient_variance = Newly_merged.groupby('Ticker')['Daily_Return'].var().reset_index()
+efficient_variance.columns = ['Ticker', 'Variance']
+
 ```
 
 
 
+```{python}
+Newly_merged['Daily_Return'] = Newly_merged.groupby('Ticker')['Close'].pct_change()
+Newly_merged.dropna(subset=['Daily_Return'], inplace=True) 
+
+returns_matrix = Newly_merged.pivot_table(
+    index='Date', 
+    columns='Ticker', 
+    values='Daily_Return'
+)
+
+covariance_matrix = returns_matrix.cov()
+
+
+print(covariance_matrix.head())
+```
