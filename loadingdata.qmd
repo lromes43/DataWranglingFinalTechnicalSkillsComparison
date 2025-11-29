@@ -1,0 +1,80 @@
+
+```{python}
+import pandas as pd
+import numpy as np 
+import yfinance as yf
+```
+
+
+GOAL:  Find optimal combination of stocks from different sectors to maximize return and minimize risk of portfolio.
+
+DATA: 5 Different Sectors: Healthcare, Energy, Technology, Consumer Cylical, Financial Services. Went to yahoo finance and found the five largest companies from each sector in terms of market weight. Stocks are listed below in the individual list for each sector as well as in a combined list called tickers.
+
+```{python}
+Healthcare_stocks = ['LLY', 'JNJ', 'UNH', 'MRK', 'ABT'] #getting weird value for AABV so switching AABV with ABT
+Energy_stocks = ['XOM', 'CVX', 'COP', 'WMB', 'EPD']
+Technology_stocks = ['NVDA', 'AAPL', 'MSFT', 'AVGO', 'ORCL']
+Consumer_Cylical_stocks = ['AMZN', 'TSLA', 'HD','MCD', 'TJX' ]
+Financial_Services_stocks = ['BRK-B', 'JPM', 'V', 'BAC', 'MA']
+```
+
+
+```{python}
+ticker_list = ['LLY', 'JNJ', 'UNH', 'MRK', 'ABT',
+                'XOM', 'CVX', 'COP', 'WMB', 'EPD',
+               'NVDA', 'AAPL', 'MSFT', 'AVGO', 'ORCL',
+               'AMZN', 'TSLA', 'HD','MCD', 'TJX' ,
+               'BRK-B', 'JPM', 'V', 'BAC', 'MA'
+
+                ]
+```
+
+```{python}
+tickertest = 'LLY'
+
+start_date = '2021-01-01'
+end_date = '2025-11-28'
+
+
+```
+
+```{python}
+try: 
+    LLY_Data = yf.download(
+        tickers=tickertest,
+        start = start_date,
+        end = end_date, 
+        interval="1d"
+    )
+
+    LLY_Data_close = LLY_Data['Close']
+except Exception as e:
+    print(f"An error occurred: {e}")
+
+new_lly = LLY_Data_close.reset_index()
+
+```
+
+```{python}
+stock_df = pd.DataFrame(columns=['Date'])
+for t in ticker_list:
+    try: 
+        ticker_data = yf.download(
+            tickers=ticker_list,
+            start=start_date,
+            end = end_date,
+            interval= '1d'
+        )
+        ticker_data_close = ticker_data['Close']
+    except Exception as e:
+        print(f"An error occured: {e}")
+    ticker_data_close = ticker_data_close.reset_index()
+    new = pd.merge(stock_df, ticker_data_close, how = 'right', on = 'Date')
+    
+```
+
+Need to swap from wide to long so can add sector column 
+```{python}
+test_melt = pd.melt(new, id_vars='Date', var_name='Ticker')
+```
+
