@@ -32,7 +32,7 @@ ticker_list = ['LLY', 'JNJ', 'UNH', 'MRK', 'ABT',
 ```{python}
 tickertest = 'LLY'
 
-start_date = '2021-01-01'
+start_date = '2000-11-28'
 end_date = '2025-11-28'
 
 
@@ -53,7 +53,10 @@ except Exception as e:
 
 new_lly = LLY_Data_close.reset_index()
 
+
+
 ```
+
 
 ```{python}
 stock_df = pd.DataFrame(columns=['Date'])
@@ -106,4 +109,60 @@ for i in range(0, len(test_melt)):
 new_melt = test_melt.drop(test_melt.columns[-1], axis = 1)
 
 ```
+
+
+Finding Beta of Each and merging with previous data
+```{python}
+
+betas = []
+
+for t in ticker_list:
+    betatickers = yf.Ticker(t)
+    info = betatickers.info
+    beta = info.get('beta')
+    betas.append((t, beta))
+beta_df = pd.DataFrame(betas, columns=['Ticker', 'beta'])
+updated_data= pd.merge(new_melt, beta_df, how = 'inner', on = 'Ticker')
+
+```
+
+
+Getting Variables for Expected Return
+
+Expected Return = risk free + Beta(expected market return - risk free)
+
+Risk free using t-bill 20 year
+Beta pulled from yfinance
+expected market return using sp500
+```{python}
+risk_free_table = pd.read_html("https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve&field_tdr_date_value=2025")[0]
+last_value = risk_free_table.index[-1]
+risk_free = float(risk_free_table.loc[last_value, '20 Yr'])
+risk_free
+SP500_return_table = pd.read_html("https://www.slickcharts.com/sp500/returns")[0]
+SP500_subset = SP500_return_table[SP500_return_table['Year']>=2000]
+SP500_subset_mean_return = float(SP500_subset['Total Return'].mean())
+```
+
+Expected Return for LLY
+
+```{python}
+LLY_Beta = beta_df[beta_df['Ticker'] == 'LLY']
+
+LLY_Expected_Return = risk_free + LLY_Beta['beta'] * (SP500_subset_mean_return - risk_free)
+```
+
+Expected Return for every stock
+
+```{python}
+Expected_Returns = []
+for t in beta_df['Ticker']:
+    individual_stocks = beta_df[beta_df['Ticker'] == t]
+    individual_stocks_beta = individual_stocks['beta']
+    individual_stocks_expected_return = float(risk_free + individual_stocks_beta * (SP500_subset_mean_return - risk_free))
+    Expected_Returns.append((t, individual_stocks_expected_return))
+Expected_Returns_df = pd.DataFrame(Expected_Returns, columns=['Ticker', 'beta'])
+```
+
+
 
