@@ -193,17 +193,12 @@ efficient_variance.columns = ['Ticker', 'Variance']
 
 
 ```{python}
-Newly_merged['Daily_Return'] = Newly_merged.groupby('Ticker')['Close'].pct_change()
-Newly_merged.dropna(subset=['Daily_Return'], inplace=True) 
-
-returns_matrix = Newly_merged.pivot_table(
-    index='Date', 
-    columns='Ticker', 
-    values='Daily_Return'
-)
-
-covariance_matrix = returns_matrix.cov()
-
-
-print(covariance_matrix.head())
+test_merge = pd.merge(Newly_merged, efficient_variance, how = 'left', on = 'Ticker')
+data = test_merge
+data.to_feather('DataNov29.feather')
 ```
+
+
+
+
+
