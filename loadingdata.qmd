@@ -3,6 +3,7 @@
 import pandas as pd
 import numpy as np 
 import yfinance as yf
+from plotnine import *
 ```
 
 
@@ -195,10 +196,49 @@ efficient_variance.columns = ['Ticker', 'Variance']
 ```{python}
 test_merge = pd.merge(Newly_merged, efficient_variance, how = 'left', on = 'Ticker')
 data = test_merge
-data.to_feather('DataNov29.feather')
+
+```
+
+```{python}
+data['Change'] = data.groupby('Ticker')['Close'].diff()
+data['SD'] = data['Change'].std()
+```
+
+```{python}
+five_year_risk_free_std = float(risk_free_table['5 Yr'].std())
+five_year_risk_free_return = float(risk_free_table['5 Yr'].mean())
+ten_year_risk_free_std = float(risk_free_table['10 Yr'].std())
+ten_year_risk_free_return = float(risk_free_table['10 Yr'].mean())
+twenty_year_risk_free_std = float(risk_free_table['20 Yr'].std())
+twenty_year_risk_free_return = float(risk_free_table['20 Yr'].mean())
+
+
+risk_free_df = pd.DataFrame({'5 Year Return': five_year_risk_free_return, 
+                            '5 Year STD': five_year_risk_free_std,
+                            '10 Year Return': ten_year_risk_free_return,
+                            '10 Year SD': ten_year_risk_free_std,
+                            '20 Year Return': twenty_year_risk_free_return,
+                            '20 Year SD': twenty_year_risk_free_std
+}, index=['Risk-Free-Asset'])
 ```
 
 
+Modern Portfolio Theory
+
+Want to first minimize the risk in expected return so want the optimal set of vars that minimize std 
+
+
+
+
+```{python}
+subset2 = data[data['Ticker'] == 'AAPL']
+subset3 = data[data['Ticker'] == 'XOM']
+
+plot = (ggplot(subset2,aes(x = 'SD', 
+                           y = 'Expected_Return')) + 
+                           geom_point()+
+                           geom_point(subset3, aes(x = 'SD', y = 'Expected_Return')))
+```
 
 
 
