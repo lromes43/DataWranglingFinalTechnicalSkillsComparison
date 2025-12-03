@@ -1,5 +1,5 @@
 ---
-title: "Demonstrating Quarto for GitHub READMEs"
+title: "Data Wrangling Final Project"
 format: gfm
 execute: 
   warning: false
@@ -32,7 +32,6 @@ I also created a dictionary of skills in the technology industry. I did this so 
 
 ```{python}
 #| echo: false
-#| results: 'hide'
 #| #| messages: false
 #| warnings: false
 merged_data = pd.merge(channels, videos, how = 'inner', on = 'channel_id')

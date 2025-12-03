@@ -1,4 +1,4 @@
-# Demonstrating Quarto for GitHub READMEs
+# Data Wrangling Final Project
 
 
 ## The Goal I Set Out to Accomplish
@@ -212,7 +212,7 @@ model.summary()
 | Model:            | OLS              | Adj. R-squared:     | -0.002    |
 | Method:           | Least Squares    | F-statistic:        | 0.4487    |
 | Date:             | Wed, 03 Dec 2025 | Prob (F-statistic): | 0.773     |
-| Time:             | 15:36:52         | Log-Likelihood:     | -20886.   |
+| Time:             | 15:38:05         | Log-Likelihood:     | -20886.   |
 | No. Observations: | 1300             | AIC:                | 4.178e+04 |
 | Df Residuals:     | 1295             | BIC:                | 4.181e+04 |
 | Df Model:         | 4                |                     |           |
