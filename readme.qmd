@@ -70,7 +70,6 @@ for skill, pattern in specific_keywords.items():
 I created a new column called date in the jobs df that shows when the job was posted. The jobs dataset was uploaded to Kaggle 8 years ago on December 3, 2017 so this was used as my baseline. I then used the postdate variable which included how long the job had been posted to find the initial job posting date.
 
 ```{python}
-#| echo: false
 #| results: 'hide'
 #| #| messages: false
 #| warnings: false
@@ -182,7 +181,6 @@ I made a copy of each df, merged_data and jobs. This was done so I could reset t
 
 
 ```{python}
-#| echo: false
 #| results: 'hide'
 #| #| messages: false
 #| warnings: false
@@ -233,7 +231,6 @@ Like mentioned above, I was going in expecting to see a strong relationship betw
 Converting the merged data (youtube data) to long format to help with plotting and aggregating by the monthly level to better see trends.
 
 ```{python}
-#| echo: false
 #| results: 'hide'
 #| #| messages: false
 #| warnings: false
@@ -291,7 +288,6 @@ The results from this plot are no surprise, the AI/ML craze is definetly real an
 Converting Job data to long
 
 ```{python}
-#| echo: false
 #| results: 'hide'
 #| #| messages: false
 #| warnings: false
