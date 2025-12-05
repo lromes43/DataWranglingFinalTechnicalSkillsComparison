@@ -224,6 +224,14 @@ print(f"Correlation coefficient between youtube videos and date is: {corr1:.3f}"
 
     Correlation coefficient between youtube videos and date is: 0.119
 
+Plotting Correlation, apparent there is no relationship between
+technical skills and youtube video date.
+
+``` python
+from plotnine import *
+corr1_plot = (ggplot(merged_data_new, aes(x = 'Date', y = 'technical_skill')) + geom_line(color = 'navy') + theme_minimal())
+```
+
 Going in I was expecting to see a significiant positive relationship
 between the apperance of key technical words identified above and date
 of the techology youtube videos. I was expecting this initially as
@@ -251,6 +259,14 @@ print(f"Correlation coefficient between required job skills and date: {corr2:.3f
 ```
 
     Correlation coefficient between required job skills and date: -0.045
+
+Plotting Correlation, apparent there is no relationship between
+technical skills and youtube video date.
+
+``` python
+from plotnine import *
+corr2_plot = (ggplot(jobs_new, aes(x = 'Date', y = 'technical_skill')) + geom_point(color = 'navy') + theme_minimal())
+```
 
 Like mentioned above, I was going in expecting to see a strong
 relationship between date and technical skill keywords as the technology
@@ -315,7 +331,7 @@ youtube_monthly_trend.rename(columns={'month': 'time', 'Flag': 'Video_Count'}, i
 )
 ```
 
-<img src="readme_files/figure-commonmark/cell-9-output-1.png"
+<img src="readme_files/figure-commonmark/cell-11-output-1.png"
 width="480" height="288" />
 
 The results from this plot are no surprise, the AI/ML craze is definetly
@@ -380,7 +396,7 @@ jobs_monthly_trend.rename(columns={'month': 'time', 'Flag': 'Job_Count'}, inplac
 )
 ```
 
-<img src="readme_files/figure-commonmark/cell-11-output-1.png"
+<img src="readme_files/figure-commonmark/cell-13-output-1.png"
 width="480" height="288" />
 
 This graph shows the relationship between the technical skills outlined
@@ -416,8 +432,8 @@ model.summary()
 | Dep. Variable:    | views            | R-squared:          | 0.001     |
 | Model:            | OLS              | Adj. R-squared:     | -0.002    |
 | Method:           | Least Squares    | F-statistic:        | 0.4487    |
-| Date:             | Wed, 03 Dec 2025 | Prob (F-statistic): | 0.773     |
-| Time:             | 15:46:08         | Log-Likelihood:     | -20886.   |
+| Date:             | Fri, 05 Dec 2025 | Prob (F-statistic): | 0.773     |
+| Time:             | 18:24:19         | Log-Likelihood:     | -20886.   |
 | No. Observations: | 1300             | AIC:                | 4.178e+04 |
 | Df Residuals:     | 1295             | BIC:                | 4.181e+04 |
 | Df Model:         | 4                |                     |           |
