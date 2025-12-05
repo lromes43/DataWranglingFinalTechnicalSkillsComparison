@@ -230,7 +230,11 @@ technical skills and youtube video date.
 ``` python
 from plotnine import *
 corr1_plot = (ggplot(merged_data_new, aes(x = 'Date', y = 'technical_skill')) + geom_line(color = 'navy') + theme_minimal())
+corr1_plot 
 ```
+
+<img src="readme_files/figure-commonmark/cell-7-output-1.png"
+width="336" height="240" />
 
 Going in I was expecting to see a significiant positive relationship
 between the apperance of key technical words identified above and date
@@ -266,7 +270,11 @@ technical skills and youtube video date.
 ``` python
 from plotnine import *
 corr2_plot = (ggplot(jobs_new, aes(x = 'Date', y = 'technical_skill')) + geom_point(color = 'navy') + theme_minimal())
+corr2_plot
 ```
+
+<img src="readme_files/figure-commonmark/cell-9-output-1.png"
+width="336" height="240" />
 
 Like mentioned above, I was going in expecting to see a strong
 relationship between date and technical skill keywords as the technology
@@ -433,7 +441,7 @@ model.summary()
 | Model:            | OLS              | Adj. R-squared:     | -0.002    |
 | Method:           | Least Squares    | F-statistic:        | 0.4487    |
 | Date:             | Fri, 05 Dec 2025 | Prob (F-statistic): | 0.773     |
-| Time:             | 18:24:19         | Log-Likelihood:     | -20886.   |
+| Time:             | 18:25:31         | Log-Likelihood:     | -20886.   |
 | No. Observations: | 1300             | AIC:                | 4.178e+04 |
 | Df Residuals:     | 1295             | BIC:                | 4.181e+04 |
 | Df Model:         | 4                |                     |           |

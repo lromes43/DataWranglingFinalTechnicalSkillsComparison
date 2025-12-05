@@ -214,6 +214,7 @@ Plotting Correlation, apparent there is no relationship between technical skills
 ```{python}
 from plotnine import *
 corr1_plot = (ggplot(merged_data_new, aes(x = 'Date', y = 'technical_skill')) + geom_line(color = 'navy') + theme_minimal())
+corr1_plot 
 ```
 
 
@@ -236,6 +237,7 @@ Plotting Correlation, apparent there is no relationship between technical skills
 ```{python}
 from plotnine import *
 corr2_plot = (ggplot(jobs_new, aes(x = 'Date', y = 'technical_skill')) + geom_point(color = 'navy') + theme_minimal())
+corr2_plot
 ```
 
 Like mentioned above, I was going in expecting to see a strong relationship between date and technical skill keywords as the technology is evolving requiring individuals to be much more technical than ever before. Further, the job marker is ultra-competitive requiring individuals to be proficient in a multitude of different skills. After running the correlation test, it was found that the correlation between these two variables is only -0.045 suggesting that the two variables are not linearly related and, in fact, exhibit a very weak negative trend. The frequency of these keywords appears to slightly decline over time.
